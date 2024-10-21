@@ -6,6 +6,6 @@ Its functions include:
 When either of the above two functions are called, the RTC is updated for daylight saving time
 according to the current time.
 
-The included utilities test_TSYNC south.py and test_TSYNC north.py are to test operation of the class
+The included utilities test_TSYNC south.py and test_TSYNC north.py are to test operation of the class in each hemisphere, 
 and TSYNC_user setup.py for configuring the start and end of daylight saving time for a country not included 
 in the preset configuration. For example, Arizona does not observe DST except for the Navaho nation which does.
