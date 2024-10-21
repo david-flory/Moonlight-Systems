@@ -3,7 +3,8 @@ and handling changing time to UTC or daylight saving time for any country or tim
 Its functions include:
 1) Setting the RTC from either an NTP server or GPS module
 2) Returning a timestamp formatted to several user configured formats, for user configured country.
-When either of the above two functions a called, the RTC is updated for daylight saving time.
+When either of the above two functions are called, the RTC is updated for daylight saving time
+according to the current time.
 
 The included utilities test_TSYNC south.py and test_TSYNC north.py are to test operation of the class
 and TSYNC_user setup.py for configuring the start and end of daylight saving time for a country not included 
