@@ -1,0 +1,46 @@
+Now test DST rollover when time not updated externally
+
+Timestamp now is 31-03-2024 01:59:55
+
+deepsleep for 6 seconds
+dst_check is  False, which is correct
+*****************************
+dst_check is  True
+[incorrect, because initialising tsync has set it [correctly] to summertime
+because it was summertime when tsync was initialised, so clock not put forward]
+Timestamp now is 31-03-2024 02:00:01
+*****************************
+Set timestamp for just before clocks go back
+Timestamp now is 27-10-2024 01:59:55
+
+dst_check is  True
+deepsleep for 6 seconds
+***************************
+dst_check is  False
+[reset to false because of initialisation during winter time]
+Timestamp now is 27-10-2024 02:00:01
+
+End of demo
+
+If we save the state of 'clk.dst_check' before deepsleep and set it on wake.
+
+Now test DST rollover when time not updated externally
+
+Timestamp before clocks go forward  is 31-03-2024 01:59:55
+
+dst_check is  False [correct, we are on winter time]
+Deepleep for 5 seconds
+***************************
+dst_check is  False [as flag was saved, clock is put forward]
+Timestamp now is 31-03-2024 03:00:01
+
+Set timestamp for just before clocks go back
+Timestamp now is 27-10-2024 01:59:55
+
+dst_check is  True
+deepleep for 5 seconds
+***************************
+dst_check is  True [as flag was saved, clock is put back correctly]
+Timestamp now is 27-10-2024 01:00:01
+
+End of demo
