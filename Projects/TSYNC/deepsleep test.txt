@@ -1,3 +1,8 @@
+Output showing TSYNC shortcoming when using deepsleep.
+If using deepsleep, you must save the state of the DST flag "dst_check" before hibernation 
+and reset it on wake.
+
+Begin demo
 Now test DST rollover when time not updated externally
 
 Timestamp now is 31-03-2024 01:59:55
@@ -24,6 +29,7 @@ End of demo
 
 If we save the state of 'clk.dst_check' before deepsleep and set it on wake.
 
+Begin demo
 Now test DST rollover when time not updated externally
 
 Timestamp before clocks go forward  is 31-03-2024 01:59:55
