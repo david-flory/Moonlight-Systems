@@ -24,8 +24,8 @@ def connect(station):
         return False
 
 #Change ssid and password to your credentials to obtain internet connection
-ssid = 'Gigaclear_F9D0'
-password = 'y7rq0aez88'
+ssid = 'xxxxxxxxxxx'
+password = 'xxxxxxxxx'
 
 rtc = RTC()    
 station = network.WLAN(network.STA_IF)
