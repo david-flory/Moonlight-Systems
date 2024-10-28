@@ -268,11 +268,11 @@ class TimeSync:
                 epoch += 3600 #add an hour
                 self.dst_check = True
         else: #South
-            self.dst_check = True
-            epoch += 3600 #Summertime, Jan to April
             if epoch > self.dst_2 and epoch < self.dst_1: # >April and < Oct
-                epoch -= 3600 #back to UTC 
                 self.dst_check = False
+            else:
+                epoch += 3600 # summertime Jan to April
+                self.dst_check = True
         self.__set_localtime(epoch)
         rtc.datetime(self.__set_localtime(1))
                     
