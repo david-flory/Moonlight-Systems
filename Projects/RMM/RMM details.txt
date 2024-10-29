@@ -1,0 +1,63 @@
+The RMM class works with several, but not all data types.
+It works with strings, sets, lists, tuples, integers, floats and boolean.
+Multiline strings are accepted but linefeed characters are stripped out when saved to the rtc memory.
+
+ Requirements.
+ 
+ Import sys, machine.deepsleep, machine.RTC and the RMM.py module into your code.
+ 
+In your code set a reference to these.
+rtc = machine.RTC()
+rm = RMM.rtc_mem()
+
+The following code sets differences between the ESP32 and ESP8266
+board = sys.platform
+if board == 'esp8266':
+    rtc.irq(trigger=rtc.ALARM0, wake=machine.DEEPSLEEP)
+    rm = RMM.rtc_mem(491)
+elif board == 'esp32':
+    rm = RMM.rtc_mem(2047)
+	
+Place the following function in your code.
+def save_vars():
+    result = rm.save()
+    for x in result:
+        exec("z = " + x)
+        rm.parse(z, x)
+    writedata = rm.parse(z,'end')
+    rtc.memory(writedata) 
+ 
+ At the entry point of your programme declare your variables.
+ You may assign values here if you require, or anywhere else during runtime.
+ 
+ When you initialise a variable that you want preserved during deepsleep do like this.
+ Declare the variable as its data type, then pass the data type and variable name to the RMM class via the method 
+ "rm.preserve(data type, variable name)"  
+ 
+ NOTE you pass the name of the variable, not the variable itself.
+ 
+my_string = ''
+rm.preserve(str, 'my_string')
+my_int = 0
+re_preserve(int, 'my_int')
+
+Immediately after the variable declaration section, place these two lines.
+
+command = str(rtc.memory(),'UTF-8')
+if command != '': exec(command)
+
+if variables were saved before entering deepsleep they have now been restored.
+
+Finally, just before the command to enter deepsleep enter this line to save your variables.
+save_vars()
+The function save_vars() writes all your variables to the rtc memory, or if the amount of data is too large for that,
+writes to a file in the filesystem. Either way, the data will be preserved during deepsleep and restored on wake.
+
+The ESP32 deepsleep command is different to the ESP8266. The following will work without needing to have different code
+for either machine. If running on ESP8266 the line deepsleep(3000) will never be reached.
+
+print('\nHibernate for 3 seconds')
+if board == 'esp8266':
+    rtc.alarm(rtc.ALARM0, 3000)
+    deepsleep()
+deepsleep(3000)
