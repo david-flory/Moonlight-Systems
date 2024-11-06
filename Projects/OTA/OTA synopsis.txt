@@ -13,8 +13,8 @@ There are two parts to this process.
 1] The class library OTA.py, which checks, downloads and installs updates.
 This will be running in your program, which must not be called "main.py". I have used the name "program.py" throughout this guide.
 Pre-requisite for program.py is it should have access to the web server, a version number, the url of the update folder on the server.
-It can contain other modules, libraries etc and there are no restrictions to the code or what it does, except it must ALL be contained in functions.
-So for an existing program, move all the main code to a function called maincode() which will be the entry point of your program.
+It can contain other modules, libraries etc and there are no restrictions to the code or what it does, except it must ALL be contained in functions 
+as a standalone module, so for an existing program, move all the main code to a function called maincode() which will be the entry point of your program.
 This is not too much of a problem normally, but you may have to pay more attention to the scope of your variables.
 Finally, for this system to work you must use Deepsleep, even if it is only for a duration of 1 second, so the updated files can be 
 reloaded into the namespace and run.
