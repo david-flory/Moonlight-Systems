@@ -1,0 +1,74 @@
+Log File Manager LFM.py
+
+LFM provides a wrapper for filesystem operations and initialising SD Cards.
+It has methods to initialise and mount SD cards, read, write, delete, list and archive.
+If using an SD Card the library 'sdcard.py' needs to be present on the ESP.
+This can be downloaded from https://github.com/micropython/micropython-lib/blob/01047889eb1acf115424fee293e03769f6916393/micropython/drivers/storage/sdcard/sdcard.py
+
+Create text files as an instance of LFM.py and from then perform actions such as read, write, delete just using dot notation and the filename.
+It also can be configured to copy the file to an archive when it reaches a pre-configured size and then empty the file.
+It can also be configured to write files to the ESP filesystem and it's archives to the SD card.
+Has a method to delete archive files and list files on the filesyste the file is mounted on.
+
+Usage.
+In your program code:
+Import LFM
+
+If you have an SD card attached, call  LFM.fm_init_sd with
+your SPI pin numbers as a tuple with six elements, in the orderof 
+slot number, sck, miso, mosi, and cs. The last parameter is 0 if your
+SD Card breakout is permanently powered, or the pin number that
+provides power when you turn in on and off.
+
+lfm = LFM.fm_init_sd((2,5,32,14,27,0))
+This variable used to toggle between SD card files and files saved to ESP flash.
+SD = lfm.is_sd()
+If you are not using an SD Card, there is no need to initialise the library or create the 'SD' variable.
+
+For each file you want to create, initialise an instance of the file name
+The first parameter is the file name without an extention, it will be suffixed with '.txt'
+The second parameter is optional, and is the maximumum size you want to set for the file.
+If included, when the file size is greater than this figure, it is renamed
+filename_archive.txt and a new filename.txt created.
+
+This creates files on the ESP flash
+
+data_log=LFM.fm('data_log', 0)
+
+If an SD card is present, use a 3rd parameter, the variable 'SD' declared above
+to denote the file is to be written to the SD card.
+
+serial_log=LFM.fm('serial_log', 150,SD)
+
+There is also another option when creating the file instance.
+If you have an SD card installed, and want to save the file to the ESP main filesystem
+but want the archives backed up on the SD card, use an optional parameter 'bksd=SD'
+where SD is the variable created when initialising the SD card. Though you could use 'bksd=True'
+if the initialisation of the card failed and returned false, an error will be raised when trying to write an archive to it.
+
+serial_log=LFM.fm('serial_log', 150, bksd=SD)
+
+Write something to 'serial_log.txt'
+serial_log.write('Write some text')
+
+Read contents of 'serial_log.txt'
+print(serial_log.read())
+
+To list files use the list_files() method on any file instance that is using the filesystem you want to list.
+For example:  serial_log.list_files()
+
+To delete the file 'serial_log.txt', use the file's delete() method
+serial_log.delete()
+
+To delete archived files, use the file's delete_arc() method
+A parameter is optional. If used, it will be the number of archives to remain.
+These will be the latest archives and renumbered 1, 2, 3 etc with oldest first.
+If empty it defaults to 1 so all archives except the latest will be deleted, and
+that archive will be renumbered to 1
+
+serial_log.delete_arc(3)
+
+To stop archives buliding up, and just keep the latest archive of the file 'serial_log.txt', use "serial_log.delete_arc()" 
+This will cause an overwrite of 'serial_log_archive1.txt' every time a new archive is created.
+
+
