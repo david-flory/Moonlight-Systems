@@ -21,7 +21,7 @@ rm.debug = True  #prints info messages for testing or debugging
 def save_vars():
     result = rm.save()
     for x in result:
-        exec("z = " + x)
+        exec("z = " + x,  None, globals())
         rm.parse(z, x)
     writedata = rm.parse(z,'end')
     rtc.memory(writedata)
@@ -115,7 +115,7 @@ if command == '':
     prog_name = ''
 else:
     print('Found data in rtc memory.')
-    exec(command)
+    exec(command,  None, globals())
     print('Previous variables restored.\n')
     print(chunk)
     print('my_string = ',end=" ")
