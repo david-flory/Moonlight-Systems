@@ -20,15 +20,15 @@ upd_url  = "http://my_webserver/updates/test_ota.php?ver=" + ver #increment ver 
 #actual version if you require it. It is not nescessary for OTA.py but I use it as confirmation updates are running sucsessfully
 #by having the ESPs upload theis when they upload data, and I can see remotely which version is in use on all the ESPs in the group.
 version = 'V3.0'
-
 #Enter your WiFi network credentials here
 ssid = 'xxxxxxxx'
 pword = 'xxxxxxxx'
+#the password you set for all the ESPs in your project
+password = 'my_password'
 
 #set a reference to the OTA class
 ota = OTA.ota_updates()
-#the password you set for all the ESPs in your project
-password = 'Epsilon12345' 
+
 station = network.WLAN(network.STA_IF)
 station.active(False)
 
@@ -37,7 +37,6 @@ station.active(False)
 
 def get_connection(station):
     station.active(True)
-    station.config(reconnects = 5)
     count = 0
     station.connect(ssid,pword)
     while not station.isconnected():

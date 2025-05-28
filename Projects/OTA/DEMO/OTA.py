@@ -37,6 +37,7 @@ class ota_updates:
         
     def check_updates(self, url):
         try:
+            print(url + '_data')
             response = requests.get(url + '_data')
         except:
             print('request failed')
@@ -47,15 +48,6 @@ class ota_updates:
             self.parse(command)
             result = self.update_program(url)
             self.download_data.clear()
-            #print(self.updated)
-            #f = open('updates.txt','w')
-            #var = "updated = ['"
-            #for v in self.updated:
-                #var += v + "','"
-            #var = var[:len(var)-2] + ']'
-            #f.write(var)
-            #f.close
-            #self.updated.clear()
             return result
         else:
             response.close
@@ -87,7 +79,7 @@ class ota_updates:
                 for y in range(3):
                     try:
                         URL = url + str(x)
-                        #print(URL)
+                        print(URL)
                         response = requests.get(URL)
                         break
                     except:
