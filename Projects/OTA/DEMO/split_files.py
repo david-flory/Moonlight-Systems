@@ -1,31 +1,47 @@
 """Copyright (c) 2024 David Flory  www.moonlight-systems.co.uk
-Requirements: Python3"""
+Requirements: Python3
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to use
+in the Software without restriction, including without limitation the rights
+to copy, modify, merge, publish, distribute, copies of the Software, and to
+permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE"""
 
 import sys
 import os
 #limits files to less than 4Kb, actually around 3500 characters.
 mac = ''
 download_data = []
+ver = ''
 
 def split_program():
     global download_data
     global mac
+    global ver
     x = 0
     chunks = 0
     flag = 0
     mac = ''
     tempdata=[]
-    mac = input('Enter mac address for unit to update [preceded by V no.] : ')
-    process = 0
-    while process == 0:
-        file = input('Enter filename of file to process or Enter to finish : ')
-        if file == '' or file.upper() == 'N':
-            process = 1
-            print()
-        else:
-            prog = input('Enter filename as run on the ESP : ')
-            tempdata.append(file)
-            tempdata.append(prog)
+    program = 'program.py'
+    ver = 'V' + input('Enter version number of program to be updated, [without the V] : ')
+    mac = input('Enter mac address for unit to update : ')
+    file = input('Enter filename of file to process: ')
+    prog = input('Enter filename as run on the ESP or just Enter for program.py: ' )
+    if prog == '': prog = program
+    tempdata.append(file)
+    tempdata.append(prog)
     maxline = 0
     lines = 0
     count = 0
@@ -47,7 +63,7 @@ def split_program():
         flag = 0
         lines = 0
         while flag != 1:
-            upd = mac.replace(':','') + str(x)
+            upd = ver + mac.replace(':','') + str(x)
             f2 = open(upd,'w')
             while chars < 3500:
                 line = f.readline()
@@ -75,7 +91,7 @@ for x in download_data:
 
 print('Files created for upload:   Filename on ESP,  Number of chunks.\n')
 print(tempdata)
-upd = mac.replace(':','') + '_data'
+upd = ver + mac.replace(':','') + '_data'
 f = open(upd,'w')
 f.write(tempdata)
 f.close()
