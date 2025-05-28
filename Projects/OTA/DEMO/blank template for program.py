@@ -4,19 +4,13 @@ from time import sleep
 import urequests as requests
 import ubinascii
 import network
-#Any modules you import that are not built in to micropython
-#must be error trapped like this. This will only raise compile
-#errors so updated modules that crash can be restored from backup.
-#Do not write .py after the module name.
-try:
-    import OTA
-except Exception as e:
-    raise Exception('OTA, ' + str(e))
+import OTA
+
 #essential lines of your program
 #The version number that will precede files on website that are downloadable.
 ver = 'V2' #increment ver on each updated file
 #URL pointing to the update location on the webserver.
-upd_url  = "http://my_webserver/updates/test_ota.php?ver=" + ver #increment ver on each updated file
+upd_url  = "http://my_webserver/updates/ESP_get_file.php?ver=" + ver #increment ver on each updated file
 #actual version if you require it. It is not nescessary for OTA.py but I use it as confirmation updates are running sucsessfully
 #by having the ESPs upload theis when they upload data, and I can see remotely which version is in use on all the ESPs in the group.
 version = 'V1.0' 
@@ -36,7 +30,6 @@ station.active(False)
 
 def get_connection(station):
     station.active(True)
-    station.config(reconnects = 5)
     count = 0
     station.connect(ssid,pword)
     while not station.isconnected():
