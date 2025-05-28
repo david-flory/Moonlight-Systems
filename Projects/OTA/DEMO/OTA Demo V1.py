@@ -4,14 +4,8 @@ from time import sleep
 import urequests as requests
 import ubinascii
 import network
-#Any modules you import that are not built in to micropython
-#must be error trapped like this. This will only raise compile
-#errors so updated modules that crash can be restored from backup.
-#Do not write .py after the module name.
-try:
-    import OTA
-except Exception as e:
-    raise Exception('OTA, ' + str(e))
+import OTA
+
 #essential lines of your program
 #The version number that will precede files on website that are downloadable.
 ver = 'V2' #increment ver on each updated file
