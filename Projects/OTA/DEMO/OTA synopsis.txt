@@ -4,6 +4,8 @@ Requirements:
 A web server running PHP on a local LAN, or an internet website you have FTP access to.
 Create a directory to which your ESPs can connect to download update files. Ideally this folder should not be publicly
 accessible and have meta tags to deny web robots.
+The file ESP_get_file.php should reside this directory for OTA.py to connect to in order to download the updates. 
+Comments in the file show how to set it up.
 
 The ESPs must have a means of connectivity to the internet, or a LAN if updating from a web server in a local network.
 The program running on the ESPs must connect to the internet periodically to check for and download the updates.
@@ -13,8 +15,8 @@ There are two parts to this process.
 1] The class library OTA.py, which checks, downloads and installs updates.
 This will be running in your program, which must not be called "main.py". I have used the name "program.py" throughout this guide.
 Pre-requisite for program.py is it should have access to the web server, a version number, the url of the update folder on the server.
-It can contain other modules, libraries etc and there are no restrictions to the code or what it does, except it must ALL be contained in functions.
-So for an existing program, move all the main code to a function called maincode() which will be the entry point of your program.
+It can contain other modules, libraries etc and there are no restrictions to the code or what it does, except it must ALL be contained in functions 
+as a standalone module, so for an existing program, move all the main code to a function called maincode() which will be the entry point of your program.
 This is not too much of a problem normally, but you may have to pay more attention to the scope of your variables.
 Finally, for this system to work you must use Deepsleep, even if it is only for a duration of 1 second, so the updated files can be 
 reloaded into the namespace and run.
@@ -30,6 +32,7 @@ This can be 1000 to just update and reboot, to much longer periods depending on 
 
 How it works:
 program.py does whatever you want it to during normal operation.
+It does not have to be named 'program.py' but if you use another name, be sure to change the name in two lines of 'main.py'.
 If your program periodically connects to the server to upload data, then have it check for updates at the same time.
 If it doesn't do that, you should set some kind of trigger to check periodically for updates, such as an RTC alarm or counter.
 If there are no updates, or the server is unavailable, the program continues from where it left off.
@@ -46,16 +49,15 @@ of around 4Kb each. OTA.py downloads all the chunks, re-assembles them and insta
 Splitting the programs into chunks:
 The utility program split_files.py will split the files, name the chunks, and save them to a folder ready to be uploaded to the server.
 It runs on Python3, so will run on a PC, Mac or Raspberry Pi with Python installed.
-Its fairly intuitive to use. First it prompts for the MAC Address of the ESP the update is intended for.
-This is so individual ESPs get the correct software. The MAC should be preceded by the version number of the program.
+Its fairly intuitive to use. First it prompts for the version number of the update, then the MAC Address of the ESP the update is intended for.
+This is so individual ESPs get the correct software. 
 This ensures the updates are only downloaded once, and you can remove them from the server at your leisure.
 (See the demo programs for an explanation of this). 
 It then prompts for the name of the file to process, which should be in the same folder as split_files.py
 and then prompts for the name of that file as it should be on the ESP.
-This is so you can different versions and names on your development platform for the same program on the ESP.
-This process is repeated until you press enter without a fileneme, so you can process several files at a time.
+This is so you can use different versions and names on your development platform for the same program on the ESP.
 It then processes the files and writes the chunks to the same folder. In addition to the chunks is a file with the suffix
-_data which tells OTA.py how many programs are download, there 'ESP names', and how many chunks in each one.
+_data which tells OTA.py the ESP filename, and how many chunks it contains.
 FTP all these up to your webserver, and they will be downloaded to the ESP next time it checks for updates.
 
 The 3 demo programs demonstrate the functionality of OTA.py, and also explain the special requirements your
@@ -63,7 +65,7 @@ program needs in the comments.
 
 Sanity check
 The backup system is primarily a failsafe against corrupted downloads, and will work if the updated program crashes
-when it is imported. It can not function correctly when runtime errors occur during within an otherwise normally running 
+when it is imported. It can not function correctly when runtime errors occur during an otherwise normally running 
 program . For that reason, you should effectively trap any foreseeable errors in your code and thoroughly test it prior
 to remotely updating your ESPs, or you may find yourself having to retrieve them from the field to re-program them.
 
