@@ -17,24 +17,22 @@ def restore(file):
 
 sleep(2)
 snooze = 0
-#this will trap a compile error from 'program.py' and restore backup
+#this will trap a compile errors from updates and restore a backup
 #If your program is not called 'program.py' you must change this.
 #It is case sensitive and do not write .py after the name
 try:
-    from program import maincode
+    from program import maincode #change if name is different
 except Exception as e:
-    file = 'program'
-    print('Error in ' + file + ': ' + str(e))
-    restore(file)
+        file = 'program' #change if name is different
+        print('Error in ' + file + ': ' + str(e))
+        restore(file)
 
-#this will trap compile errors from modules imported by program.py
 print('Calling maincode\n\n')
 try:
     snooze = maincode()
 except Exception as e:
-    print(str(e))
-    file = str(e)[:str(e).find(',')]
-    print('Error in ' + file)
+    file = 'program' #change if name is different
+    print('Error in ' + file + ': ' + str(e))
     restore(file)
 
 deepsleep(snooze)
